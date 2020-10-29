@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>防抖</title>
+</head>
+<body>
+  <h3>防抖是为了解决事件重复执行</h3>
+  <div id="content" style="height:150px;line-height:150px;text-align:center; color: #fff;background-color:#ccc;font-size:80px;"></div>
+</body>
+<script>
+
+/**
+ * 获取16进制颜色值
+ */
+function getRandomRgb (){
+  let num = Math.floor(Math.random()*16*16*16*16*16*16)
+  return '#' + (num.toString(16))
+}
+
+  /**
+ * 防抖
+ * @param {Function} fn 方法
+ * @param {number} wait 等待时间
+ * @param {boolean} type 类型 true 为立即执行，false 为非立即执行
+ */
+  function debounce (fn,wait,type){
+    let timeout 
+    return function () {
+      if (timeout) clearTimeout(timeout)
+      if(type){
+        var callNow = !timeout
+        timeout = setTimeout(() => {
+          timeout = null
+        },wait)
+        if(callNow) fn.call(this)
+      }
+      else {
+        timeout = setTimeout(() => {
+          fn.call(this)
+          timeout = null
+        },wait)
+      }
+    }
+  }
+  let num = 1
+  let content = document.getElementById('content')
+  function count() {
+    content.innerHTML = num++
+    console.log(getRandomRgb())
+  }
+  content.onmousemove =  debounce(count,2000,false)
+  
+  // content.addEventListener('click',debounce(count,1000,false))
+</script>
+</html>

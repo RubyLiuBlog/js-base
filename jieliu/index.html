@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>节流-定时器版</title>
+</head>
+<body>
+  <h1>节流是在一段时间内函数只会执行一次</h1>
+  <div id="content" style="height:150px;line-height:150px;text-align:center; color: #fff;background-color:#ccc;font-size:80px;"></div>
+  <script>
+    let content = document.getElementById('content')
+    let num = 0
+    function setValue(){
+      content.innerHTML = num++
+    }
+    /**
+     * 节流定时器实现
+     * 
+     */
+    function throttle(fn,deplay){
+      var timeout 
+      return () => {
+        if(!timeout){
+          timeout = setTimeout(()=>{
+            timeout = null;
+            fn()
+          },deplay)
+        }
+      }
+    }
+    /**
+     * 时间戳版
+     * 
+     */
+    function throttle2(fn,timeStamp){
+      // 初始化时间
+      let lastTime = 0
+      return () => {
+        var nowTime = Date.now()
+        if(nowTime-lastTime > timeStamp){
+          lastTime = nowTime
+          fn.call(this)
+        }
+      }
+    }
+    content.onmousemove = throttle(setValue,1000) 
+  </script>
+</body>
+</html>
